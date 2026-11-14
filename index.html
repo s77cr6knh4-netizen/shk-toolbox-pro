@@ -65,56 +65,29 @@
   </section>
 
   <section class="card">
-    <h2>2 · Rohr und Betriebsbedingungen</h2>
-    <label for="material">Rohrwerkstoff (Rauigkeit-Voreinstellung)</label>
-    <select id="material">
-      <option value="cu">Kupfer</option><option value="ss">Edelstahl</option><option value="steel">C-Stahl</option><option value="mlcp">Mehrschichtverbundrohr</option><option value="plastic">Kunststoff</option><option value="custom">Benutzerdefiniert</option>
-    </select>
-    <label for="roughness">Absolute Rohrrauigkeit</label><div class="unit"><input id="roughness" type="number" min="0" step="0.0001" value="0.0015"><span>mm</span></div>
-    <label for="temp">Wassertemperatur</label><div class="unit"><input id="temp" type="number" min="0" max="100" step="1" value="20"><span>°C</span></div>
-    <label for="length">Rohrlänge</label><div class="unit"><input id="length" type="number" min="0" step="1" value="20"><span>m</span></div>
-    <label for="zeta">Summe der Einzelverlustbeiwerte ζ (optional)</label><input id="zeta" type="number" min="0" step="0.1" value="0">
-    <div class="notice">Der Innendurchmesser ist entscheidend. Außendurchmesser oder DN dürfen nicht ungeprüft als Innendurchmesser eingesetzt werden.</div>
-  </section>
-
-  <section class="card">
-    <h2>6 · Auswahlkriterien</h2>
-    <label for="maxVelocity">Maximale Strömungsgeschwindigkeit</label><div class="unit"><input id="maxVelocity" type="number" min="0.01" step="0.05" value="2.0"><span>m/s</span></div>
-    <label for="maxPa">Maximaler Rohrreibungsdruckverlust</label><div class="unit"><input id="maxPa" type="number" min="1" step="10" value="150"><span>Pa/m</span></div>
-    <label for="diameters">Vergleichs-Innendurchmesser (mm, kommasepariert)</label><input id="diameters" type="text" value="10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 35, 40, 45, 50, 54, 60, 65, 75, 80, 100">
-    <div class="muted">Die Liste ist eine frei editierbare Vergleichsreihe – keine verbindliche Hersteller- oder DN-Tabelle.</div>
-    <div class="error" id="inputError">Bitte die Eingaben und die Durchmesserliste prüfen.</div>
-  </section>
-
-  <section class="card">
-    <h2>7 · Berechnungsergebnis</h2>
-    <div id="recommendation" class="result"><div class="eyebrow">EMPFOHLENER VERGLEICHSDURCHMESSER</div><div class="big">20 mm</div></div>
-    <div class="grid" id="metrics" style="margin-top:10px"></div>
-    <h2 style="margin-top:20px">Rohrdimensionen im Vergleich</h2>
-    <div class="tablewrap"><table><thead><tr><th>ID mm</th><th>m/s</th><th>Pa/m</th><th>Gesamt kPa</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
-    <div class="actions"><button id="reset" type="button">Zurücksetzen</button><button id="share" type="button">Ergebnis teilen</button></div>
-  </section>
-
-
-  <section class="card" id="pipeSystemCard">
-    <h2>3 · Rohrsystem und Außendurchmesser</h2>
-    <label for="pipeSystem">Rohrsystem</label>
+    <h2>2 · Rohrsystem und Betriebsbedingungen</h2>
+    <label for="pipeSystem">Hersteller / Rohrsystem</label>
     <select id="pipeSystem">
       <option value="profipress">Viega Profipress (Kupfer)</option>
-      <option value="sanpress">Viega Sanpress / Sanpress Inox</option>
+      <option value="sanpress_inox">Viega Sanpress Inox (Edelstahl)</option>
       <option value="prestabo">Viega Prestabo (C-Stahl)</option>
       <option value="temponox">Viega Temponox (Edelstahl)</option>
-      <option value="megapress">Viega Megapress (Stahlrohr – Wandstärke abhängig vom Grundrohr)</option>
-      <option value="alpex">FRÄNKISCHE alpex F50</option>
-      <option value="custom">Eigene Rohrabmessung</option>
+      <option value="megapress">Viega Megapress (Stahlrohr)</option>
+      <option value="alpex">FRÄNKISCHE alpex F50 (Mehrschichtverbundrohr)</option>
     </select>
-    <label for="pipeSize">Außendurchmesser</label>
-    <select id="pipeSize"></select>
-    <div class="grid">
-      <div><label for="wall">Wandstärke</label><div class="unit"><input id="wall" type="number" min="0.1" step="0.1"><span>mm</span></div></div>
-      <div><label for="inner">Innendurchmesser</label><div class="unit"><input id="inner" type="number" readonly><span>mm</span></div></div>
-    </div>
-    <div class="notice" id="pipeNote">Bitte Rohrsystem und Dimension prüfen. Bei Megapress ist die Wandstärke des verwendeten Grundrohrs maßgeblich.</div>
+    <label for="temp">Wassertemperatur</label><div class="unit"><input id="temp" type="number" min="0" max="100" step="1" value="20"><span>°C</span></div>
+    <label for="length">Rohrlänge</label><div class="unit"><input id="length" type="number" min="0" step="1" value="20"><span>m</span></div>
+    <label for="maxVelocity">Maximale Strömungsgeschwindigkeit</label><div class="unit"><input id="maxVelocity" type="number" min="0.01" step="0.05" value="2.0"><span>m/s</span></div>
+    <label for="maxPa">Maximaler Rohrreibungsdruckverlust</label><div class="unit"><input id="maxPa" type="number" min="1" step="10" value="150"><span>Pa/m</span></div>
+    <label for="zeta">Zusätzliche Einzelverlustbeiwerte ζ (optional)</label><input id="zeta" type="number" min="0" step="0.1" value="0">
+    <div class="notice" id="pipeNote">Die Rohrabmessungen werden intern verwendet und im Ergebnis nicht angezeigt. Die hinterlegten Maßreihen sind vorläufige Datensätze, keine freigegebene Hersteller-Datenbank. Vor Ausführung mit der aktuellen technischen Dokumentation des konkreten Rohrsystems abgleichen.</div>
+  </section>
+  <section class="card">
+    <h2>3 · Dimensionierungsergebnis</h2>
+    <div id="recommendation" class="result"><div class="eyebrow">EMPFOHLENE ROHRDIMENSION</div><div class="big">Berechnung läuft …</div></div>
+    <div class="grid" id="metrics" style="margin-top:10px"></div>
+    <div class="error" id="inputError">Bitte Eingaben prüfen.</div>
+    <div class="actions"><button id="reset" type="button">Zurücksetzen</button><button id="share" type="button">Ergebnis teilen</button></div>
   </section>
 
   <section class="card" id="zetaCard">
@@ -160,19 +133,18 @@
         <li>Volumenstrom aus Leistung: Näherung für Wasser mit temperaturabhängigen Dichte- und Wärmekapazitätswerten.</li>
         <li>Rohrdruckverlust nach Darcy-Weisbach; Reibungsbeiwert mit laminarer, Übergangs- und turbulenter Näherung.</li>
         <li>Einzelverluste: Δp = Σζ · ρv²/2. ζ muss passend zu Bauteil, Einbausituation und Herstellerdaten ermittelt werden.</li>
-        <li>Automatische Auswahl: kleinster gelisteter Innendurchmesser, der die eingegebenen Grenzwerte für Geschwindigkeit und Rohrreibung einhält.</li>
-        <li>Die Liste der Durchmesser und Rauigkeiten ist nur ein Startwert. Vor einer realen Auslegung konkrete Rohrabmessungen, Medium, Armaturen, Herstellerdaten und geltende Regeln prüfen.</li>
+        <li>Automatische Auswahl: kleinste im gewählten Rohrsystem hinterlegte Dimension, deren interner lichter Querschnitt die eingegebenen Grenzwerte für Geschwindigkeit und Rohrreibung einhält.</li>
+        <li>Die hinterlegten Rohrabmessungen sind eine vorläufige Datengrundlage und müssen vor realer Auslegung anhand der aktuellen Herstellerunterlagen für die konkrete Rohrserie geprüft werden. Bei Megapress ist das tatsächlich verwendete Stahlgrundrohr maßgeblich.</li>
         <li>Keine vollständige Rohrnetzberechnung, kein hydraulischer Abgleich und keine Pumpenauslegung.</li>
       </ul>
     </details>
   </section>
-  <footer>SHK TOOLBOX PRO · Version 2.0 · Berechnungshilfe – keine normgerechte Fachplanung</footer>
+  <footer>SHK TOOLBOX PRO · Version 3.0 · Berechnungshilfe – keine normgerechte Fachplanung</footer>
 </div>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
   let mode = "power";
-  const presets = {cu:0.0015,ss:0.0015,steel:0.045,mlcp:0.007,plastic:0.007};
   const fmt = (x,d=2) => Number.isFinite(x) ? x.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d}) : "–";
   function setMode(next){
     mode=next;
@@ -184,8 +156,8 @@
   }
   $("modePower").addEventListener("click",()=>setMode("power"));
   $("modeDirect").addEventListener("click",()=>setMode("direct"));
-  $("material").addEventListener("change",e=>{if(e.target.value!=="custom")$("roughness").value=presets[e.target.value];calculate();});
   document.querySelectorAll("input,select").forEach(el=>el.addEventListener("input",calculate));
+  $("pipeSystem").addEventListener("change",calculate);
   function waterProps(t){
     // Näherungswerte für Wasser; linear interpoliert zwischen Stützstellen.
     const pts=[[0,999.84,0.001792],[10,999.70,0.001307],[20,998.21,0.001002],[30,995.65,0.000798],[40,992.22,0.000653],[50,988.04,0.000547],[60,983.20,0.000466],[70,977.76,0.000404],[80,971.80,0.000355],[90,965.30,0.000315],[100,958.35,0.000282]];
@@ -202,83 +174,60 @@
     const f=(Re-2300)/(4000-2300);
     return lam+(swamee-lam)*f;
   }
+  const pipeCatalog = {
+    profipress:{label:"Viega Profipress",rough:0.0015,items:[["12 mm",12,1],["15 mm",15,1],["18 mm",18,1],["22 mm",22,1],["28 mm",28,1.2],["35 mm",35,1.5],["42 mm",42,1.5],["54 mm",54,2]]},
+    sanpress_inox:{label:"Viega Sanpress Inox",rough:0.0015,items:[["15 mm",15,1],["18 mm",18,1],["22 mm",22,1.2],["28 mm",28,1.2],["35 mm",35,1.5],["42 mm",42,1.5],["54 mm",54,1.5]]},
+    prestabo:{label:"Viega Prestabo",rough:0.045,items:[["15 mm",15,1.2],["18 mm",18,1.2],["22 mm",22,1.5],["28 mm",28,1.5],["35 mm",35,1.5],["42 mm",42,1.5],["54 mm",54,1.5]]},
+    temponox:{label:"Viega Temponox",rough:0.0015,items:[["15 mm",15,1],["18 mm",18,1],["22 mm",22,1.2],["28 mm",28,1.2],["35 mm",35,1.5],["42 mm",42,1.5],["54 mm",54,1.5]]},
+    megapress:{label:"Viega Megapress",rough:0.045,items:[["¾″",26.9,2.6],["1″",33.7,2.6],["1¼″",42.4,2.6],["1½″",48.3,2.6],["2″",60.3,2.9],["2½″",76.1,2.9],["3″",88.9,3.2],["4″",108,3.6]]},
+    alpex:{label:"FRÄNKISCHE alpex F50",rough:0.007,items:[["16 × 2,0 mm",16,2],["20 × 2,0 mm",20,2],["26 × 3,0 mm",26,3],["32 × 3,0 mm",32,3],["40 × 3,5 mm",40,3.5],["50 × 4,0 mm",50,4],["63 × 4,5 mm",63,4.5],["75 × 5,0 mm",75,5]]}
+  };
   function calculate(){
     const p=Number($("power").value),dt=Number($("deltaT").value),direct=Number($("flowDirect").value);
-    const q=mode==="power" ? (p>0&&dt>0 ? p*1e6/(4180*dt)*60/1000 : NaN) : direct;
-    // p*1e6/(4180*dT) gives L/s; multiply by 60 for L/min.
+    const q=mode==="power"?(p>0&&dt>0?p*1e6/(4180*dt)*60/1000:NaN):direct;
     $("flowOut").textContent=Number.isFinite(q)&&q>0?fmt(q)+" l/min":"–";
     $("flowHour").textContent=Number.isFinite(q)&&q>0?fmt(q*60,1)+" l/h":"Eingabe prüfen";
     $("flowError").style.display=Number.isFinite(q)&&q>0?"none":"block";
-    const t=Number($("temp").value),L=Number($("length").value),eps=Number($("roughness").value)/1000,Z=Number($("zeta").value);
-    const vmax=Number($("maxVelocity").value),maxPa=Number($("maxPa").value);
-    const ds=$("diameters").value.split(",").map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>0).sort((a,b)=>a-b);
-    const valid=Number.isFinite(q)&&q>0&&t>=0&&t<=100&&L>=0&&eps>=0&&Z>=0&&vmax>0&&maxPa>0&&ds.length>0;
+    const t=Number($("temp").value),L=Number($("length").value),Z=Number($("zeta").value);
+    const vmax=Number($("maxVelocity").value),maxPa=Number($("maxPa").value),sys=pipeCatalog[$("pipeSystem").value];
+    const valid=Number.isFinite(q)&&q>0&&t>=0&&t<=100&&L>=0&&Z>=0&&vmax>0&&maxPa>0&&!!sys;
     $("inputError").style.display=valid?"none":"block";
-    if(!valid){$("recommendation").innerHTML='<div class="eyebrow">ERGEBNIS</div><div class="big">Eingaben prüfen</div>'; $("metrics").innerHTML="";$("rows").innerHTML="";return;}
-    const {rho,mu}=waterProps(t),Q=q/60000;
-    const values=ds.map(d=>{
-      const D=d/1000,A=Math.PI*D*D/4,v=Q/A,Re=rho*v*D/mu,f=calcFriction(Re,eps/D);
+    if(!valid){$("recommendation").innerHTML='<div class="eyebrow">ERGEBNIS</div><div class="big">Eingaben prüfen</div>';$("metrics").innerHTML="";return;}
+    const {rho,mu}=waterProps(t),Q=q/60000,eps=sys.rough/1000;
+    const values=sys.items.map(([label,od,wall])=>{
+      const d=od-2*wall,D=d/1000,A=Math.PI*D*D/4,v=Q/A,Re=rho*v*D/mu,f=calcFriction(Re,eps/D);
       const dynamic=rho*v*v/2,per=f/D*dynamic,straight=per*L,local=Z*dynamic,total=straight+local;
-      return {d,v,Re,f,per,total,regime:Re<2300?"Laminar":Re<4000?"Übergang":"Turbulent",ok:v<=vmax&&per<=maxPa};
+      return {label,d,v,Re,f,per,total,ok:d>0&&v<=vmax&&per<=maxPa};
     });
     const selected=values.find(x=>x.ok);
     if(selected){
-      $("recommendation").innerHTML=`<div class="eyebrow">KLEINSTER PASSENDER VERGLEICHSDURCHMESSER</div><div class="big">${fmt(selected.d,1)} mm</div><span class="pill">Grenzwerte eingehalten</span>`;
+      $("recommendation").innerHTML=`<div class="eyebrow">EMPFOHLENE DIMENSION · ${sys.label}</div><div class="big">${selected.label}</div><span class="pill">Grenzwerte eingehalten</span>`;
       $("metrics").innerHTML=`
+        <div class="metric"><span>Volumenstrom</span><strong>${fmt(q,2)} l/min</strong></div>
         <div class="metric"><span>Strömungsgeschwindigkeit</span><strong>${fmt(selected.v,2)} m/s</strong></div>
-        <div class="metric"><span>Rohrreibung</span><strong>${fmt(selected.per,1)} Pa/m</strong></div>
-        <div class="metric"><span>Gesamtdruckverlust</span><strong>${fmt(selected.total/1000,3)} kPa</strong></div>
-        <div class="metric"><span>Reynolds-Zahl</span><strong>${Math.round(selected.Re).toLocaleString("de-DE")}</strong></div>
-        <div class="metric"><span>Reibungsbeiwert λ</span><strong>${fmt(selected.f,4)}</strong></div>
-        <div class="metric"><span>Förderhöhenäquivalent</span><strong>${fmt(selected.total/(rho*9.81),3)} mWS</strong></div>`;
+        <div class="metric"><span>Rohrreibungsverlust</span><strong>${fmt(selected.per,1)} Pa/m</strong></div>
+        <div class="metric"><span>Druckverlust Rohrlänge</span><strong>${fmt(selected.per*L/1000,3)} kPa</strong></div>
+        <div class="metric"><span>Einzelverluste (ζ)</span><strong>${fmt(selected.total-selected.per*L,0)} Pa</strong></div>
+        <div class="metric"><span>Gesamtdruckverlust</span><strong>${fmt(selected.total/1000,3)} kPa</strong></div>`;
     }else{
-      $("recommendation").innerHTML='<div class="eyebrow">ERGEBNIS</div><div class="big">Keine passende Größe</div><span class="pill warn">Grenzwerte nicht erfüllt</span>';
-      $("metrics").innerHTML='<div class="metric"><span>Hinweis</span><strong style="font-size:14px">Größere Durchmesser ergänzen oder Grenzwerte prüfen.</strong></div>';
+      $("recommendation").innerHTML=`<div class="eyebrow">ERGEBNIS · ${sys.label}</div><div class="big">Keine passende Dimension</div><span class="pill warn">Grenzwerte nicht erfüllt</span>`;
+      $("metrics").innerHTML='<div class="metric"><span>Hinweis</span><strong style="font-size:14px">Grenzwerte prüfen oder eine größere verfügbare Systemdimension wählen.</strong></div>';
     }
-    $("rows").innerHTML=values.map(x=>`<tr class="${selected&&x.d===selected.d?'recommended':''}"><td>${fmt(x.d,1)}</td><td>${fmt(x.v,2)}</td><td>${fmt(x.per,1)}</td><td>${fmt(x.total/1000,3)}</td><td>${x.ok?'<span class="pill">Passend</span>':'<span class="pill bad">Außerhalb</span>'}</td></tr>`).join("");
-    window.currentSummary={q,selected,values};
+    window.currentSummary={q,selected,values,system:sys.label};
   }
   $("reset").addEventListener("click",()=>{
     $("power").value=15;$("deltaT").value=10;$("flowDirect").value=12;setMode("power");
-    $("material").value="cu";$("roughness").value=presets.cu;$("temp").value=20;$("length").value=20;$("zeta").value=0;
-    $("maxVelocity").value=2;$("maxPa").value=150;$("diameters").value="10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 35, 40, 45, 50, 54, 60, 65, 75, 80, 100";calculate();
+    $("pipeSystem").value="profipress";$("temp").value=20;$("length").value=20;$("zeta").value=0;
+    $("maxVelocity").value=2;$("maxPa").value=150;calculate();
   });
   $("share").addEventListener("click",async()=>{
     const s=window.currentSummary;if(!s)return;
-    const text=`SHK Toolbox Pro\nVolumenstrom: ${fmt(s.q)} l/min\n${s.selected?`Vergleichs-Innendurchmesser: ${fmt(s.selected.d,1)} mm\nGeschwindigkeit: ${fmt(s.selected.v)} m/s\nDruckverlust: ${fmt(s.selected.per,1)} Pa/m\nGesamt: ${fmt(s.selected.total/1000,3)} kPa`:"Kein passender Durchmesser gefunden"}\nNur überschlägige Berechnungshilfe.`;
+    const text=`SHK Toolbox Pro\nVolumenstrom: ${fmt(s.q)} l/min\n${s.selected?`Rohrsystem: ${s.system}\nRohrdimension: ${s.selected.label}\nGeschwindigkeit: ${fmt(s.selected.v)} m/s\nDruckverlust: ${fmt(s.selected.per,1)} Pa/m\nGesamt: ${fmt(s.selected.total/1000,3)} kPa`:"Kein passender Durchmesser gefunden"}\nNur überschlägige Berechnungshilfe.`;
     if(navigator.share){try{await navigator.share({title:"SHK Toolbox Pro – Berechnung",text});}catch(e){}}
     else if(navigator.clipboard){await navigator.clipboard.writeText(text);$("share").textContent="Kopiert ✓";}
     else alert(text);
   });
 
-  const pipeCatalog = {
-    profipress:[[12,1],[15,1],[18,1],[22,1],[28,1.2],[35,1.5],[42,1.5],[54,2]],
-    sanpress:[[15,1],[18,1],[22,1.2],[28,1.2],[35,1.5],[42,1.5],[54,1.5]],
-    prestabo:[[15,1.2],[18,1.2],[22,1.5],[28,1.5],[35,1.5],[42,1.5],[54,1.5]],
-    temponox:[[15,1],[18,1],[22,1.2],[28,1.2],[35,1.5],[42,1.5],[54,1.5]],
-    alpex:[[16,2],[20,2],[26,3],[32,3],[40,3.5],[50,4],[63,4.5],[75,5]],
-    megapress:[[26.9,2.6],[33.7,2.6],[42.4,2.6],[48.3,2.6],[60.3,2.9],[76.1,2.9],[88.9,3.2],[108,3.6]]
-  };
-  function updatePipeSizes(){
-    const sys=$("pipeSystem").value, sel=$("pipeSize"), list=pipeCatalog[sys]||[];
-    sel.innerHTML="";
-    if(sys==="custom"){sel.innerHTML='<option value="custom">Eigene Abmessung</option>';$("wall").value=1.5;$("wall").readOnly=false;}
-    else {list.forEach(([od,w])=>{const o=document.createElement("option");o.value=od;o.textContent=od+" mm außen";o.dataset.wall=w;sel.appendChild(o);});$("wall").readOnly=false;}
-    updateInner();
-    $("pipeNote").textContent=sys==="megapress"?"Megapress verwendet zugelassene Stahlrohre als Grundrohr. Die Wandstärke ist abhängig vom tatsächlich eingesetzten Rohr und muss geprüft werden.":sys==="alpex"?"alpex F50: Abmessungen als Startauswahl; genaue Produkt-/Rohrserie und Herstellerunterlage vor Auslegung prüfen.":"Voreingestellte Rohrabmessungen sind Startwerte. Bei abweichender Rohrserie Wandstärke kontrollieren.";
-  }
-  function updateInner(){
-    const od=Number($("pipeSize").value), w=Number($("wall").value);
-    const opt=$("pipeSize").selectedOptions[0];
-    if(opt&&opt.dataset.wall && !$("wall").dataset.userEdited) $("wall").value=opt.dataset.wall;
-    const wall=Number($("wall").value);
-    $("inner").value=od>2*wall?(od-2*wall).toFixed(1):"";
-    if($("inner").value) $("diameters").value=String($("inner").value);
-    calculate();
-  }
-  $("pipeSystem").addEventListener("change",()=>{delete $("wall").dataset.userEdited;updatePipeSizes();});
-  $("pipeSize").addEventListener("change",()=>{delete $("wall").dataset.userEdited;const o=$("pipeSize").selectedOptions[0];if(o&&o.dataset.wall)$("wall").value=o.dataset.wall;updateInner();});
-  $("wall").addEventListener("input",()=>{$("wall").dataset.userEdited="1";updateInner();});
   const zetaCatalog=[["90°-Bogen",0.7],["45°-Bogen",0.4],["T-Stück Durchgang",0.6],["T-Stück Abzweig",1.5],["Kugelhahn voll geöffnet",0.05],["Rückschlagventil",2.0]];
   const zCounts=zetaCatalog.map(()=>0); let customZCount=0;
   function counterHTML(id,count){return `<div class="counter"><button type="button" data-count="${id}" data-delta="-1" aria-label="Minus">−</button><strong>${count}</strong><button type="button" data-count="${id}" data-delta="1" aria-label="Plus">+</button></div>`;}
@@ -292,7 +241,7 @@
   $("customZetaCounter").addEventListener("click",e=>{const b=e.target.closest("button[data-count]");if(b){customZCount=Math.max(0,customZCount+Number(b.dataset.delta));renderZeta();}});
   $("customZetaValue").addEventListener("input",renderZeta);
   $("customZetaName").addEventListener("input",()=>{});
-  const kvsDefaults={thermo:1.5,lockshield:1.0,balancing:4.0,dpreg:2.5,ball:25,check:6,zone:4,control2:6,control3:8,mb3:null,rv2:9.07,custom:1};
+  const kvsDefaults={thermo:1.5,lockshield:1.0,balancing:4.0,dpreg:2.5,ball:25,check:6,zone:4,control2:6,control3:8,mb3:null,rv2:null,custom:1};
   const kvsNames={thermo:"Thermostatventil",lockshield:"Rücklaufverschraubung",balancing:"Strangregulierventil",dpreg:"Differenzdruckregler",ball:"Kugelhahn",check:"Rückschlagventil",zone:"Zonenventil",control2:"2-Wege-Regelventil",control3:"3-Wege-Mischer",mb3:"SpiroTrap MB3",rv2:"SpiroVent RV2",custom:"Eigenes Bauteil"};
   const mb3Points={"3/4″":[1.3,2.1],"1″":[2.0,3.8],"1 1/4″":[3.6,2.2],"1 1/2″":[5.0,2.6],"2″":[7.5,5.8]};
   const rv2Sizes=["3/4″","1″","1 1/4″","1 1/2″","2″"];
@@ -308,7 +257,7 @@
       const isSpiro=x.type==="mb3"||x.type==="rv2";
       const sizeOptions=isSpiro?rv2Sizes.map(s=>`<option ${x.size===s?"selected":""}>${s}</option>`).join(""):["DN 15","DN 20","DN 25","DN 32","DN 40","DN 50"].map(s=>`<option ${x.size===s?"selected":""}>${s}</option>`).join("");
       const kvsField=x.kvs==null?"":x.kvs;
-      const hint=x.type==="mb3"?"Hersteller veröffentlicht Nennvolumenstrom und Δp je Größe; keine Kvs-Zahl pauschal übernommen.":x.type==="rv2"?"Herstellerdatenbank nennt Kvs 9,07 m³/h für UA022W (22 mm). Für Gewindegrößen bitte produktspezifisch bestätigen.":"Allgemeiner Orientierungswert – je Hersteller, DN und Ventilstellung prüfen.";
+      const hint=x.type==="mb3"?"Hersteller veröffentlicht Nennvolumenstrom und Δp je Größe; keine Kvs-Zahl pauschal übernommen.":x.type==="rv2"?"Kein pauschaler Kvs-Wert hinterlegt. Nur einen für die konkrete Ausführung bestätigten Herstellerwert eintragen.":"Allgemeiner Orientierungswert – je Hersteller, DN und Ventilstellung prüfen.";
       return `<div class="krow"><div class="khead"><div><div class="kname">${x.name}</div><div class="ksub">${hint}</div></div><button class="delbtn" data-del="${i}">Entfernen</button></div>
       <div class="kfields"><div><label>Größe</label><select data-field="size" data-i="${i}">${sizeOptions}</select></div><div><label>Kvs (m³/h)</label><input type="number" min="0.01" step="0.01" value="${kvsField}" placeholder="Wert eintragen" data-field="kvs" data-i="${i}"></div></div>
       <div class="zhead"><span class="zsub">Stückzahl</span>${counterHTML("k"+i,x.count)}</div><div class="zsub" id="kresult${i}">Druckverlust wird berechnet, sobald ein Kvs-Wert eingetragen ist.</div></div>`;
@@ -326,7 +275,7 @@
   $("kvsRows").addEventListener("change",e=>{const f=e.target.dataset.field;if(f){const x=kvsItems[Number(e.target.dataset.i)];x[f]=f==="kvs"?Number(e.target.value):e.target.value;renderKvs();}});
   $("kvsRows").addEventListener("input",e=>{const f=e.target.dataset.field;if(f==="kvs"){const x=kvsItems[Number(e.target.dataset.i)];x.kvs=Number(e.target.value);}});
 
-  updatePipeSizes();renderZeta();
+  renderZeta();
   calculate();
   if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
 })();
