@@ -36,6 +36,7 @@
     .recommended{background:#eaf5ef;font-weight:750}.notice{font-size:12px;color:#586760;background:#f2f5f3;border-radius:11px;padding:11px;margin-top:12px}
     .error{color:var(--red);font-size:13px;margin-top:9px;display:none}.actions{display:flex;gap:8px;margin-top:13px}.actions button{flex:1;border:1px solid var(--line);background:white;border-radius:11px;padding:11px;font-weight:650;color:var(--green)}
     details summary{font-weight:700;font-size:14px;cursor:pointer}details p,details li{font-size:12px;color:var(--muted)}footer{text-align:center;color:#82908a;font-size:11px;padding:16px 0}
+    .counter{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin:10px 0}.counter button,.addbtn{border:1px solid var(--line);background:#edf4f0;color:var(--green);border-radius:10px;padding:9px 14px;font-weight:800}.counter strong{min-width:24px;text-align:center}.zrow,.krow{border-bottom:1px solid var(--line);padding:10px 0}.zhead,.khead{display:flex;justify-content:space-between;gap:10px;align-items:center}.zname,.kname{font-weight:700;font-size:14px}.zsub,.ksub{font-size:11px;color:var(--muted)}.kfields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.kfields label{margin-top:4px}.kfields input,.kfields select{height:40px}.delbtn{border:0;background:transparent;color:var(--red);font-size:12px;padding:8px}.addbtn{width:100%;margin:8px 0}.counter button{min-width:42px;font-size:18px;padding:6px 12px}
     @media(min-width:600px){.wrap{padding-left:20px;padding-right:20px}header{margin-left:-20px;margin-right:-20px;padding-left:24px;padding-right:24px}}
   </style>
 </head>
@@ -77,7 +78,7 @@
   </section>
 
   <section class="card">
-    <h2>3 · Auswahlkriterien</h2>
+    <h2>6 · Auswahlkriterien</h2>
     <label for="maxVelocity">Maximale Strömungsgeschwindigkeit</label><div class="unit"><input id="maxVelocity" type="number" min="0.01" step="0.05" value="2.0"><span>m/s</span></div>
     <label for="maxPa">Maximaler Rohrreibungsdruckverlust</label><div class="unit"><input id="maxPa" type="number" min="1" step="10" value="150"><span>Pa/m</span></div>
     <label for="diameters">Vergleichs-Innendurchmesser (mm, kommasepariert)</label><input id="diameters" type="text" value="10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 35, 40, 45, 50, 54, 60, 65, 75, 80, 100">
@@ -86,12 +87,70 @@
   </section>
 
   <section class="card">
-    <h2>4 · Berechnungsergebnis</h2>
+    <h2>7 · Berechnungsergebnis</h2>
     <div id="recommendation" class="result"><div class="eyebrow">EMPFOHLENER VERGLEICHSDURCHMESSER</div><div class="big">20 mm</div></div>
     <div class="grid" id="metrics" style="margin-top:10px"></div>
     <h2 style="margin-top:20px">Rohrdimensionen im Vergleich</h2>
     <div class="tablewrap"><table><thead><tr><th>ID mm</th><th>m/s</th><th>Pa/m</th><th>Gesamt kPa</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
     <div class="actions"><button id="reset" type="button">Zurücksetzen</button><button id="share" type="button">Ergebnis teilen</button></div>
+  </section>
+
+
+  <section class="card" id="pipeSystemCard">
+    <h2>3 · Rohrsystem und Außendurchmesser</h2>
+    <label for="pipeSystem">Rohrsystem</label>
+    <select id="pipeSystem">
+      <option value="profipress">Viega Profipress (Kupfer)</option>
+      <option value="sanpress">Viega Sanpress / Sanpress Inox</option>
+      <option value="prestabo">Viega Prestabo (C-Stahl)</option>
+      <option value="temponox">Viega Temponox (Edelstahl)</option>
+      <option value="megapress">Viega Megapress (Stahlrohr – Wandstärke abhängig vom Grundrohr)</option>
+      <option value="alpex">FRÄNKISCHE alpex F50</option>
+      <option value="custom">Eigene Rohrabmessung</option>
+    </select>
+    <label for="pipeSize">Außendurchmesser</label>
+    <select id="pipeSize"></select>
+    <div class="grid">
+      <div><label for="wall">Wandstärke</label><div class="unit"><input id="wall" type="number" min="0.1" step="0.1"><span>mm</span></div></div>
+      <div><label for="inner">Innendurchmesser</label><div class="unit"><input id="inner" type="number" readonly><span>mm</span></div></div>
+    </div>
+    <div class="notice" id="pipeNote">Bitte Rohrsystem und Dimension prüfen. Bei Megapress ist die Wandstärke des verwendeten Grundrohrs maßgeblich.</div>
+  </section>
+
+  <section class="card" id="zetaCard">
+    <h2>4 · Einzelwiderstände (ζ)</h2>
+    <p class="sub">Stückzahl nur mit Plus und Minus ändern. Die angesetzten ζ-Werte sind typische Startwerte und müssen zur konkreten Armatur passen.</p>
+    <div id="zetaRows"></div>
+    <div class="result"><div class="eyebrow">SUMME EINZELWIDERSTÄNDE</div><div class="big" id="zetaTotal">0,00</div></div>
+    <details><summary>Freies Bauteil / eigene Werte</summary>
+      <label for="customZetaName">Bezeichnung</label><input id="customZetaName" value="Sonderbauteil">
+      <label for="customZetaValue">ζ-Wert je Stück</label><input id="customZetaValue" type="number" min="0" step="0.01" value="1">
+      <div class="muted">Die Stückzahl dieses freien Bauteils wird ebenfalls mit + / − eingestellt.</div>
+      <div class="counter" id="customZetaCounter"></div>
+    </details>
+  </section>
+
+  <section class="card" id="kvsCard">
+    <h2>5 · Kvs-Bauteile</h2>
+    <p class="sub">Komponenten hinzufügen, Kvs und Stückzahl prüfen. Mehrere Bauteile werden einzeln berechnet und aufsummiert.</p>
+    <label for="kvsPreset">Bauteil hinzufügen</label>
+    <select id="kvsPreset">
+      <option value="thermo">Thermostatventil – Orientierungswert</option>
+      <option value="lockshield">Rücklaufverschraubung – Orientierungswert</option>
+      <option value="balancing">Strangregulierventil – Orientierungswert</option>
+      <option value="dpreg">Differenzdruckregler – Orientierungswert</option>
+      <option value="ball">Kugelhahn – Orientierungswert</option>
+      <option value="check">Rückschlagventil – Orientierungswert</option>
+      <option value="zone">Zonenventil – Orientierungswert</option>
+      <option value="control2">2-Wege-Regelventil – Orientierungswert</option>
+      <option value="control3">3-Wege-Mischer – Orientierungswert</option>
+      <option value="mb3">SpiroTrap MB3 – Hersteller-Nennpunkt</option>
+      <option value="rv2">SpiroVent RV2 – Hersteller-Kvs falls belegt</option>
+      <option value="custom">Eigenes Bauteil</option>
+    </select>
+    <button class="addbtn" id="addKvs" type="button">+ Bauteil hinzufügen</button>
+    <div id="kvsRows"></div>
+    <div class="result"><div class="eyebrow">DRUCKVERLUST ALLER KVS-BAUTEILE</div><div class="big" id="kvsTotal">0,000 bar</div><div class="muted" id="kvsNote">Kvs-Berechnung für Wasser; bei Glykol / anderen Medien ist eine Korrektur erforderlich.</div></div>
   </section>
 
   <section class="card">
@@ -107,7 +166,7 @@
       </ul>
     </details>
   </section>
-  <footer>SHK TOOLBOX PRO · Version 1.0 · Berechnungshilfe – keine normgerechte Fachplanung</footer>
+  <footer>SHK TOOLBOX PRO · Version 2.0 · Berechnungshilfe – keine normgerechte Fachplanung</footer>
 </div>
 <script>
 (() => {
@@ -191,6 +250,83 @@
     else if(navigator.clipboard){await navigator.clipboard.writeText(text);$("share").textContent="Kopiert ✓";}
     else alert(text);
   });
+
+  const pipeCatalog = {
+    profipress:[[12,1],[15,1],[18,1],[22,1],[28,1.2],[35,1.5],[42,1.5],[54,2]],
+    sanpress:[[15,1],[18,1],[22,1.2],[28,1.2],[35,1.5],[42,1.5],[54,1.5]],
+    prestabo:[[15,1.2],[18,1.2],[22,1.5],[28,1.5],[35,1.5],[42,1.5],[54,1.5]],
+    temponox:[[15,1],[18,1],[22,1.2],[28,1.2],[35,1.5],[42,1.5],[54,1.5]],
+    alpex:[[16,2],[20,2],[26,3],[32,3],[40,3.5],[50,4],[63,4.5],[75,5]],
+    megapress:[[26.9,2.6],[33.7,2.6],[42.4,2.6],[48.3,2.6],[60.3,2.9],[76.1,2.9],[88.9,3.2],[108,3.6]]
+  };
+  function updatePipeSizes(){
+    const sys=$("pipeSystem").value, sel=$("pipeSize"), list=pipeCatalog[sys]||[];
+    sel.innerHTML="";
+    if(sys==="custom"){sel.innerHTML='<option value="custom">Eigene Abmessung</option>';$("wall").value=1.5;$("wall").readOnly=false;}
+    else {list.forEach(([od,w])=>{const o=document.createElement("option");o.value=od;o.textContent=od+" mm außen";o.dataset.wall=w;sel.appendChild(o);});$("wall").readOnly=false;}
+    updateInner();
+    $("pipeNote").textContent=sys==="megapress"?"Megapress verwendet zugelassene Stahlrohre als Grundrohr. Die Wandstärke ist abhängig vom tatsächlich eingesetzten Rohr und muss geprüft werden.":sys==="alpex"?"alpex F50: Abmessungen als Startauswahl; genaue Produkt-/Rohrserie und Herstellerunterlage vor Auslegung prüfen.":"Voreingestellte Rohrabmessungen sind Startwerte. Bei abweichender Rohrserie Wandstärke kontrollieren.";
+  }
+  function updateInner(){
+    const od=Number($("pipeSize").value), w=Number($("wall").value);
+    const opt=$("pipeSize").selectedOptions[0];
+    if(opt&&opt.dataset.wall && !$("wall").dataset.userEdited) $("wall").value=opt.dataset.wall;
+    const wall=Number($("wall").value);
+    $("inner").value=od>2*wall?(od-2*wall).toFixed(1):"";
+    if($("inner").value) $("diameters").value=String($("inner").value);
+    calculate();
+  }
+  $("pipeSystem").addEventListener("change",()=>{delete $("wall").dataset.userEdited;updatePipeSizes();});
+  $("pipeSize").addEventListener("change",()=>{delete $("wall").dataset.userEdited;const o=$("pipeSize").selectedOptions[0];if(o&&o.dataset.wall)$("wall").value=o.dataset.wall;updateInner();});
+  $("wall").addEventListener("input",()=>{$("wall").dataset.userEdited="1";updateInner();});
+  const zetaCatalog=[["90°-Bogen",0.7],["45°-Bogen",0.4],["T-Stück Durchgang",0.6],["T-Stück Abzweig",1.5],["Kugelhahn voll geöffnet",0.05],["Rückschlagventil",2.0]];
+  const zCounts=zetaCatalog.map(()=>0); let customZCount=0;
+  function counterHTML(id,count){return `<div class="counter"><button type="button" data-count="${id}" data-delta="-1" aria-label="Minus">−</button><strong>${count}</strong><button type="button" data-count="${id}" data-delta="1" aria-label="Plus">+</button></div>`;}
+  function renderZeta(){
+    $("zetaRows").innerHTML=zetaCatalog.map(([name,z],i)=>`<div class="zrow"><div class="zhead"><div><div class="zname">${name}</div><div class="zsub">ζ = ${z.toFixed(2)} je Stück · Orientierungswert</div></div>${counterHTML("z"+i,zCounts[i])}</div></div>`).join("");
+    $("customZetaCounter").innerHTML=counterHTML("zc",customZCount);
+    const sum=zetaCatalog.reduce((s,x,i)=>s+x[1]*zCounts[i],0)+Number($("customZetaValue").value||0)*customZCount;
+    $("zetaTotal").textContent=fmt(sum,2);$("zeta").value=sum.toFixed(2);calculate();
+  }
+  $("zetaRows").addEventListener("click",e=>{const b=e.target.closest("button[data-count]");if(!b)return;const id=b.dataset.count,d=Number(b.dataset.delta);if(id==="zc")customZCount=Math.max(0,customZCount+d);else{const i=Number(id.slice(1));zCounts[i]=Math.max(0,zCounts[i]+d);}renderZeta();});
+  $("customZetaCounter").addEventListener("click",e=>{const b=e.target.closest("button[data-count]");if(b){customZCount=Math.max(0,customZCount+Number(b.dataset.delta));renderZeta();}});
+  $("customZetaValue").addEventListener("input",renderZeta);
+  $("customZetaName").addEventListener("input",()=>{});
+  const kvsDefaults={thermo:1.5,lockshield:1.0,balancing:4.0,dpreg:2.5,ball:25,check:6,zone:4,control2:6,control3:8,mb3:null,rv2:9.07,custom:1};
+  const kvsNames={thermo:"Thermostatventil",lockshield:"Rücklaufverschraubung",balancing:"Strangregulierventil",dpreg:"Differenzdruckregler",ball:"Kugelhahn",check:"Rückschlagventil",zone:"Zonenventil",control2:"2-Wege-Regelventil",control3:"3-Wege-Mischer",mb3:"SpiroTrap MB3",rv2:"SpiroVent RV2",custom:"Eigenes Bauteil"};
+  const mb3Points={"3/4″":[1.3,2.1],"1″":[2.0,3.8],"1 1/4″":[3.6,2.2],"1 1/2″":[5.0,2.6],"2″":[7.5,5.8]};
+  const rv2Sizes=["3/4″","1″","1 1/4″","1 1/2″","2″"];
+  let kvsItems=[];
+  function addKvs(){
+    const type=$("kvsPreset").value, size=type==="mb3"||type==="rv2"?"3/4″":"DN 20";
+    const kvs=type==="mb3"?null:kvsDefaults[type];
+    kvsItems.push({id:Date.now()+Math.random(),type,name:kvsNames[type],size,kvs,count:1});
+    renderKvs();
+  }
+  function renderKvs(){
+    $("kvsRows").innerHTML=kvsItems.map((x,i)=>{
+      const isSpiro=x.type==="mb3"||x.type==="rv2";
+      const sizeOptions=isSpiro?rv2Sizes.map(s=>`<option ${x.size===s?"selected":""}>${s}</option>`).join(""):["DN 15","DN 20","DN 25","DN 32","DN 40","DN 50"].map(s=>`<option ${x.size===s?"selected":""}>${s}</option>`).join("");
+      const kvsField=x.kvs==null?"":x.kvs;
+      const hint=x.type==="mb3"?"Hersteller veröffentlicht Nennvolumenstrom und Δp je Größe; keine Kvs-Zahl pauschal übernommen.":x.type==="rv2"?"Herstellerdatenbank nennt Kvs 9,07 m³/h für UA022W (22 mm). Für Gewindegrößen bitte produktspezifisch bestätigen.":"Allgemeiner Orientierungswert – je Hersteller, DN und Ventilstellung prüfen.";
+      return `<div class="krow"><div class="khead"><div><div class="kname">${x.name}</div><div class="ksub">${hint}</div></div><button class="delbtn" data-del="${i}">Entfernen</button></div>
+      <div class="kfields"><div><label>Größe</label><select data-field="size" data-i="${i}">${sizeOptions}</select></div><div><label>Kvs (m³/h)</label><input type="number" min="0.01" step="0.01" value="${kvsField}" placeholder="Wert eintragen" data-field="kvs" data-i="${i}"></div></div>
+      <div class="zhead"><span class="zsub">Stückzahl</span>${counterHTML("k"+i,x.count)}</div><div class="zsub" id="kresult${i}">Druckverlust wird berechnet, sobald ein Kvs-Wert eingetragen ist.</div></div>`;
+    }).join("");
+    let totalBar=0, missing=[];
+    kvsItems.forEach((x,i)=>{const qh=Number($("flowHour").textContent.replace(/[^\d,.-]/g,"").replace(/\./g,"").replace(",", ".")); if(x.kvs>0&&qh>0){const bar=Math.pow((qh/1000)/x.kvs,2)*x.count;totalBar+=bar;const el=document.getElementById("kresult"+i);if(el)el.textContent=`Δp bei aktuellem Volumenstrom: ${(bar/x.count).toFixed(4)} bar je Stück (Wasser-Näherung)`;}else missing.push(x.name);});
+    $("kvsTotal").textContent=totalBar.toFixed(4)+" bar";
+    $("kvsNote").textContent=missing.length? "Für "+missing.join(", ")+" fehlt ein bestätigter Kvs-Wert. SpiroTrap MB3: Hersteller-Nennpunktwerte sind hinterlegt, werden nicht als Kvs umgedeutet.":"Kvs-Näherung für Wasser; Hersteller-/Ventilstellungsdaten beachten.";
+  }
+  $("addKvs").addEventListener("click",addKvs);
+  $("kvsRows").addEventListener("click",e=>{
+    const del=e.target.closest("[data-del]");if(del){kvsItems.splice(Number(del.dataset.del),1);renderKvs();return;}
+    const b=e.target.closest("button[data-count]");if(b){const i=Number(b.dataset.count.slice(1));kvsItems[i].count=Math.max(0,kvsItems[i].count+Number(b.dataset.delta));renderKvs();}
+  });
+  $("kvsRows").addEventListener("change",e=>{const f=e.target.dataset.field;if(f){const x=kvsItems[Number(e.target.dataset.i)];x[f]=f==="kvs"?Number(e.target.value):e.target.value;renderKvs();}});
+  $("kvsRows").addEventListener("input",e=>{const f=e.target.dataset.field;if(f==="kvs"){const x=kvsItems[Number(e.target.dataset.i)];x.kvs=Number(e.target.value);}});
+
+  updatePipeSizes();renderZeta();
   calculate();
   if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
 })();
