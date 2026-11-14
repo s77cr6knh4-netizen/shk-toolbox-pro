@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173b35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SHK Toolbox Pro">
+  <meta name="description" content="SHK Rohrdimensionierung und Druckverlustberechnung">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>SHK Toolbox Pro</title>
+  <style>
+    :root{color-scheme:light;--green:#173b35;--green2:#24785f;--bg:#f3f6f5;--card:#fff;--text:#17211e;--muted:#687671;--line:#dce5e1;--soft:#eaf2ee;--warn:#fff3d9;--red:#a43c35}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .wrap{max-width:720px;margin:0 auto;padding:env(safe-area-inset-top) 14px calc(28px + env(safe-area-inset-bottom))}
+    header{margin:0 -14px 16px;padding:24px 20px 20px;background:var(--green);color:white;border-radius:0 0 22px 22px}
+    .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand h1{font-size:23px;line-height:1.1;margin:0;letter-spacing:.2px}.brand small{display:block;color:#c8ded5;font-size:11px;letter-spacing:1.2px;margin-top:7px}
+    .logo{width:48px;height:48px;border:1px solid #5b8276;border-radius:14px;display:grid;place-items:center;font-size:25px}
+    header p{margin:17px 0 0;color:#e0ece7;font-size:14px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;margin:13px 0;box-shadow:0 2px 8px #173b3508}
+    h2{font-size:16px;margin:0 0 13px}.sub{font-size:12px;color:var(--muted);margin:-7px 0 13px}
+    label{display:block;font-size:13px;font-weight:650;margin:11px 0 6px}
+    input,select{width:100%;height:47px;border:1px solid #cbd7d1;border-radius:11px;background:white;padding:0 12px;font:inherit;color:var(--text);outline:none}
+    input:focus,select:focus{border-color:var(--green2);box-shadow:0 0 0 3px #24785f1c}
+    .unit{display:grid;grid-template-columns:1fr 72px;align-items:center;gap:9px}.unit span{color:var(--muted);font-size:13px}
+    .seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#edf2ef;border-radius:12px;padding:4px;margin-bottom:12px}
+    .seg button{border:0;border-radius:9px;padding:10px 5px;background:transparent;color:#42534c;font-weight:650;font-size:13px}
+    .seg button.active{background:white;color:var(--green);box-shadow:0 1px 5px #173b351c}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.result{background:var(--soft);border-radius:14px;padding:14px;margin-top:12px}
+    .eyebrow{font-size:11px;color:#567067;font-weight:750;letter-spacing:.8px}.big{font-size:30px;font-weight:800;color:var(--green);line-height:1.2;margin:4px 0}.muted{font-size:12px;color:var(--muted)}
+    .metric{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.metric span{display:block;color:var(--muted);font-size:11px}.metric strong{display:block;font-size:19px;margin-top:4px;overflow-wrap:anywhere}
+    .pill{display:inline-block;border-radius:30px;padding:4px 9px;font-size:11px;font-weight:700;background:#e3eee8;color:#235b46}.pill.warn{background:var(--warn);color:#855b10}.pill.bad{background:#fbe9e7;color:var(--red)}
+    .tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}th,td{text-align:right;padding:10px 7px;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:11px}
+    .recommended{background:#eaf5ef;font-weight:750}.notice{font-size:12px;color:#586760;background:#f2f5f3;border-radius:11px;padding:11px;margin-top:12px}
+    .error{color:var(--red);font-size:13px;margin-top:9px;display:none}.actions{display:flex;gap:8px;margin-top:13px}.actions button{flex:1;border:1px solid var(--line);background:white;border-radius:11px;padding:11px;font-weight:650;color:var(--green)}
+    details summary{font-weight:700;font-size:14px;cursor:pointer}details p,details li{font-size:12px;color:var(--muted)}footer{text-align:center;color:#82908a;font-size:11px;padding:16px 0}
+    @media(min-width:600px){.wrap{padding-left:20px;padding-right:20px}header{margin-left:-20px;margin-right:-20px;padding-left:24px;padding-right:24px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><div><h1>SHK TOOLBOX PRO</h1><small>HYDRAULIK · ROHRDIMENSIONIERUNG</small></div><div class="logo">🔧</div></div>
+    <p>Volumenstrom berechnen, Rohrdimension vergleichen und Druckverlust abschätzen.</p>
+  </header>
+
+  <section class="card">
+    <h2>1 · Volumenstrom</h2>
+    <div class="seg" role="tablist" aria-label="Volumenstrom-Eingabe">
+      <button id="modePower" class="active" type="button">Über Leistung</button>
+      <button id="modeDirect" type="button">Direkt in l/min</button>
+    </div>
+    <div id="powerFields">
+      <label for="power">Heizleistung</label><div class="unit"><input id="power" type="number" min="0" step="0.1" value="15"><span>kW</span></div>
+      <label for="deltaT">Temperaturspreizung</label><div class="unit"><input id="deltaT" type="number" min="0" step="0.5" value="10"><span>K</span></div>
+    </div>
+    <div id="directFields" hidden>
+      <label for="flowDirect">Volumenstrom</label><div class="unit"><input id="flowDirect" type="number" min="0" step="0.1" value="12"><span>l/min</span></div>
+    </div>
+    <div class="result"><div class="eyebrow">BERECHNETER VOLUMENSTROM</div><div class="big" id="flowOut">21,51 l/min</div><div class="muted" id="flowHour">1.290,7 l/h</div></div>
+    <div class="error" id="flowError">Bitte gültige positive Werte für Leistung und Spreizung eingeben.</div>
+  </section>
+
+  <section class="card">
+    <h2>2 · Rohr und Betriebsbedingungen</h2>
+    <label for="material">Rohrwerkstoff (Rauigkeit-Voreinstellung)</label>
+    <select id="material">
+      <option value="cu">Kupfer</option><option value="ss">Edelstahl</option><option value="steel">C-Stahl</option><option value="mlcp">Mehrschichtverbundrohr</option><option value="plastic">Kunststoff</option><option value="custom">Benutzerdefiniert</option>
+    </select>
+    <label for="roughness">Absolute Rohrrauigkeit</label><div class="unit"><input id="roughness" type="number" min="0" step="0.0001" value="0.0015"><span>mm</span></div>
+    <label for="temp">Wassertemperatur</label><div class="unit"><input id="temp" type="number" min="0" max="100" step="1" value="20"><span>°C</span></div>
+    <label for="length">Rohrlänge</label><div class="unit"><input id="length" type="number" min="0" step="1" value="20"><span>m</span></div>
+    <label for="zeta">Summe der Einzelverlustbeiwerte ζ (optional)</label><input id="zeta" type="number" min="0" step="0.1" value="0">
+    <div class="notice">Der Innendurchmesser ist entscheidend. Außendurchmesser oder DN dürfen nicht ungeprüft als Innendurchmesser eingesetzt werden.</div>
+  </section>
+
+  <section class="card">
+    <h2>3 · Auswahlkriterien</h2>
+    <label for="maxVelocity">Maximale Strömungsgeschwindigkeit</label><div class="unit"><input id="maxVelocity" type="number" min="0.01" step="0.05" value="2.0"><span>m/s</span></div>
+    <label for="maxPa">Maximaler Rohrreibungsdruckverlust</label><div class="unit"><input id="maxPa" type="number" min="1" step="10" value="150"><span>Pa/m</span></div>
+    <label for="diameters">Vergleichs-Innendurchmesser (mm, kommasepariert)</label><input id="diameters" type="text" value="10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 35, 40, 45, 50, 54, 60, 65, 75, 80, 100">
+    <div class="muted">Die Liste ist eine frei editierbare Vergleichsreihe – keine verbindliche Hersteller- oder DN-Tabelle.</div>
+    <div class="error" id="inputError">Bitte die Eingaben und die Durchmesserliste prüfen.</div>
+  </section>
+
+  <section class="card">
+    <h2>4 · Berechnungsergebnis</h2>
+    <div id="recommendation" class="result"><div class="eyebrow">EMPFOHLENER VERGLEICHSDURCHMESSER</div><div class="big">20 mm</div></div>
+    <div class="grid" id="metrics" style="margin-top:10px"></div>
+    <h2 style="margin-top:20px">Rohrdimensionen im Vergleich</h2>
+    <div class="tablewrap"><table><thead><tr><th>ID mm</th><th>m/s</th><th>Pa/m</th><th>Gesamt kPa</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="actions"><button id="reset" type="button">Zurücksetzen</button><button id="share" type="button">Ergebnis teilen</button></div>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Technische Grundlagen und Grenzen</summary>
+      <ul>
+        <li>Volumenstrom aus Leistung: Näherung für Wasser mit temperaturabhängigen Dichte- und Wärmekapazitätswerten.</li>
+        <li>Rohrdruckverlust nach Darcy-Weisbach; Reibungsbeiwert mit laminarer, Übergangs- und turbulenter Näherung.</li>
+        <li>Einzelverluste: Δp = Σζ · ρv²/2. ζ muss passend zu Bauteil, Einbausituation und Herstellerdaten ermittelt werden.</li>
+        <li>Automatische Auswahl: kleinster gelisteter Innendurchmesser, der die eingegebenen Grenzwerte für Geschwindigkeit und Rohrreibung einhält.</li>
+        <li>Die Liste der Durchmesser und Rauigkeiten ist nur ein Startwert. Vor einer realen Auslegung konkrete Rohrabmessungen, Medium, Armaturen, Herstellerdaten und geltende Regeln prüfen.</li>
+        <li>Keine vollständige Rohrnetzberechnung, kein hydraulischer Abgleich und keine Pumpenauslegung.</li>
+      </ul>
+    </details>
+  </section>
+  <footer>SHK TOOLBOX PRO · Version 1.0 · Berechnungshilfe – keine normgerechte Fachplanung</footer>
+</div>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  let mode = "power";
+  const presets = {cu:0.0015,ss:0.0015,steel:0.045,mlcp:0.007,plastic:0.007};
+  const fmt = (x,d=2) => Number.isFinite(x) ? x.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d}) : "–";
+  function setMode(next){
+    mode=next;
+    $("modePower").classList.toggle("active",mode==="power");
+    $("modeDirect").classList.toggle("active",mode==="direct");
+    $("powerFields").hidden=mode!=="power";
+    $("directFields").hidden=mode!=="direct";
+    calculate();
+  }
+  $("modePower").addEventListener("click",()=>setMode("power"));
+  $("modeDirect").addEventListener("click",()=>setMode("direct"));
+  $("material").addEventListener("change",e=>{if(e.target.value!=="custom")$("roughness").value=presets[e.target.value];calculate();});
+  document.querySelectorAll("input,select").forEach(el=>el.addEventListener("input",calculate));
+  function waterProps(t){
+    // Näherungswerte für Wasser; linear interpoliert zwischen Stützstellen.
+    const pts=[[0,999.84,0.001792],[10,999.70,0.001307],[20,998.21,0.001002],[30,995.65,0.000798],[40,992.22,0.000653],[50,988.04,0.000547],[60,983.20,0.000466],[70,977.76,0.000404],[80,971.80,0.000355],[90,965.30,0.000315],[100,958.35,0.000282]];
+    let i=0;while(i<pts.length-2&&pts[i+1][0]<t)i++;
+    const a=pts[i],b=pts[i+1],f=(t-a[0])/(b[0]-a[0]);
+    return {rho:a[1]+f*(b[1]-a[1]),mu:a[2]+f*(b[2]-a[2])};
+  }
+  function calcFriction(Re,relRough){
+    if(Re<=0)return 0;
+    if(Re<2300)return 64/Re;
+    const swamee=0.25/Math.pow(Math.log10(relRough/3.7+5.74/Math.pow(Re,0.9)),2);
+    if(Re>=4000)return swamee;
+    const lam=64/2300;
+    const f=(Re-2300)/(4000-2300);
+    return lam+(swamee-lam)*f;
+  }
+  function calculate(){
+    const p=Number($("power").value),dt=Number($("deltaT").value),direct=Number($("flowDirect").value);
+    const q=mode==="power" ? (p>0&&dt>0 ? p*1e6/(4180*dt)*60/1000 : NaN) : direct;
+    // p*1e6/(4180*dT) gives L/s; multiply by 60 for L/min.
+    $("flowOut").textContent=Number.isFinite(q)&&q>0?fmt(q)+" l/min":"–";
+    $("flowHour").textContent=Number.isFinite(q)&&q>0?fmt(q*60,1)+" l/h":"Eingabe prüfen";
+    $("flowError").style.display=Number.isFinite(q)&&q>0?"none":"block";
+    const t=Number($("temp").value),L=Number($("length").value),eps=Number($("roughness").value)/1000,Z=Number($("zeta").value);
+    const vmax=Number($("maxVelocity").value),maxPa=Number($("maxPa").value);
+    const ds=$("diameters").value.split(",").map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>0).sort((a,b)=>a-b);
+    const valid=Number.isFinite(q)&&q>0&&t>=0&&t<=100&&L>=0&&eps>=0&&Z>=0&&vmax>0&&maxPa>0&&ds.length>0;
+    $("inputError").style.display=valid?"none":"block";
+    if(!valid){$("recommendation").innerHTML='<div class="eyebrow">ERGEBNIS</div><div class="big">Eingaben prüfen</div>'; $("metrics").innerHTML="";$("rows").innerHTML="";return;}
+    const {rho,mu}=waterProps(t),Q=q/60000;
+    const values=ds.map(d=>{
+      const D=d/1000,A=Math.PI*D*D/4,v=Q/A,Re=rho*v*D/mu,f=calcFriction(Re,eps/D);
+      const dynamic=rho*v*v/2,per=f/D*dynamic,straight=per*L,local=Z*dynamic,total=straight+local;
+      return {d,v,Re,f,per,total,regime:Re<2300?"Laminar":Re<4000?"Übergang":"Turbulent",ok:v<=vmax&&per<=maxPa};
+    });
+    const selected=values.find(x=>x.ok);
+    if(selected){
+      $("recommendation").innerHTML=`<div class="eyebrow">KLEINSTER PASSENDER VERGLEICHSDURCHMESSER</div><div class="big">${fmt(selected.d,1)} mm</div><span class="pill">Grenzwerte eingehalten</span>`;
+      $("metrics").innerHTML=`
+        <div class="metric"><span>Strömungsgeschwindigkeit</span><strong>${fmt(selected.v,2)} m/s</strong></div>
+        <div class="metric"><span>Rohrreibung</span><strong>${fmt(selected.per,1)} Pa/m</strong></div>
+        <div class="metric"><span>Gesamtdruckverlust</span><strong>${fmt(selected.total/1000,3)} kPa</strong></div>
+        <div class="metric"><span>Reynolds-Zahl</span><strong>${Math.round(selected.Re).toLocaleString("de-DE")}</strong></div>
+        <div class="metric"><span>Reibungsbeiwert λ</span><strong>${fmt(selected.f,4)}</strong></div>
+        <div class="metric"><span>Förderhöhenäquivalent</span><strong>${fmt(selected.total/(rho*9.81),3)} mWS</strong></div>`;
+    }else{
+      $("recommendation").innerHTML='<div class="eyebrow">ERGEBNIS</div><div class="big">Keine passende Größe</div><span class="pill warn">Grenzwerte nicht erfüllt</span>';
+      $("metrics").innerHTML='<div class="metric"><span>Hinweis</span><strong style="font-size:14px">Größere Durchmesser ergänzen oder Grenzwerte prüfen.</strong></div>';
+    }
+    $("rows").innerHTML=values.map(x=>`<tr class="${selected&&x.d===selected.d?'recommended':''}"><td>${fmt(x.d,1)}</td><td>${fmt(x.v,2)}</td><td>${fmt(x.per,1)}</td><td>${fmt(x.total/1000,3)}</td><td>${x.ok?'<span class="pill">Passend</span>':'<span class="pill bad">Außerhalb</span>'}</td></tr>`).join("");
+    window.currentSummary={q,selected,values};
+  }
+  $("reset").addEventListener("click",()=>{
+    $("power").value=15;$("deltaT").value=10;$("flowDirect").value=12;setMode("power");
+    $("material").value="cu";$("roughness").value=presets.cu;$("temp").value=20;$("length").value=20;$("zeta").value=0;
+    $("maxVelocity").value=2;$("maxPa").value=150;$("diameters").value="10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 35, 40, 45, 50, 54, 60, 65, 75, 80, 100";calculate();
+  });
+  $("share").addEventListener("click",async()=>{
+    const s=window.currentSummary;if(!s)return;
+    const text=`SHK Toolbox Pro\nVolumenstrom: ${fmt(s.q)} l/min\n${s.selected?`Vergleichs-Innendurchmesser: ${fmt(s.selected.d,1)} mm\nGeschwindigkeit: ${fmt(s.selected.v)} m/s\nDruckverlust: ${fmt(s.selected.per,1)} Pa/m\nGesamt: ${fmt(s.selected.total/1000,3)} kPa`:"Kein passender Durchmesser gefunden"}\nNur überschlägige Berechnungshilfe.`;
+    if(navigator.share){try{await navigator.share({title:"SHK Toolbox Pro – Berechnung",text});}catch(e){}}
+    else if(navigator.clipboard){await navigator.clipboard.writeText(text);$("share").textContent="Kopiert ✓";}
+    else alert(text);
+  });
+  calculate();
+  if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
+})();
+</script>
+</body>
+</html>
